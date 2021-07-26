@@ -1,9 +1,9 @@
-## Repositorio sobre el final de taller de programaciòn
-## Bautista Mercado.
+# Repositorio sobre el final de taller de programaciòn
+# Bautista Mercado.
 
-## Tres paradigmas:
+# Tres paradigmas:
 
-# IMPERATIVO - PASCAL:
+## IMPERATIVO - PASCAL:
   - Ordenar una serie de elementos en un array con un algoritmo. Ordenamiento por inserciòn
 
   - Recursiòn, caso base.
@@ -13,7 +13,7 @@
   - Merge y Merge acumulador (con dos o màs estructuras ordenadas por el mismo criterio, generar una unica estructura con toda la informaciòn). El merge acumulador usa un corte de control. Se necesita buscar el mìnimo en cada estructura, y colocar ese mìnimo
   al final de la estructura nueva (para mantener el orden) mientras las estructuras tengan elementos para procesar.
 
-# POO - JAVA:
+## POO - JAVA:
   - Objeto, estado interno-atributos (variables de instancia PRIVADAS), comportamiento (mètodos PUBLICOS).
 
   - Encapsulamiento, las variables de instancia han de ser privadas para protegerlas y ocultar la implementaciòn del objeto.
@@ -34,7 +34,7 @@
 
   - Binding dinàmico, Se determina en tiempo de ejecuciòn que mètodo es el que se tiene que ejecutar para un mensaje.
 
-# CONCURENCIA - R-INFO:
+## CONCURENCIA - R-INFO:
   - Varios procesos (no mòdulos) ejecutandose a la vez para resolver una tarea en comùn. Comparten recursos, coordinan y cooperan.
   
   - Util para explotar el hardware de una computadora (varios nucleos, varios niveles de memoria).
@@ -54,3 +54,5 @@
   - BloquearEsquina(avenida, calle), Bloquea una esquina dada por el nro de avenida y calle, si la esquina ya esta bloqueada el robot se queda en un loop hasta que pueda bloquearlo.
 
   - LiberarEsquina(avenida, calle), Libera una esquina dada por el nro de avenida y calle.
+  
+  - Para ejecutar r-info --> java -jar r-Info-2.9.jar
