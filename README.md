@@ -12,6 +12,8 @@
 
   - Merge y Merge acumulador (con dos o màs estructuras ordenadas por el mismo criterio, generar una unica estructura con toda la informaciòn). El merge acumulador usa un corte de control. Se necesita buscar el mìnimo en cada estructura, y colocar ese mìnimo
   al final de la estructura nueva (para mantener el orden) mientras las estructuras tengan elementos para procesar.
+  
+  - ^ --> shift + acento
 
 ## POO - JAVA:
   - Objeto, estado interno-atributos (variables de instancia PRIVADAS), comportamiento (mètodos PUBLICOS).
