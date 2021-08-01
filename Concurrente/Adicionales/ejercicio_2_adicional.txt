@@ -1,0 +1,123 @@
+programa ejercicio_2_adicional
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso recorridoFlorero(E av : numero; E ca : numero)
+  comenzar
+    BloquearEsquina(av, ca)
+    Pos(av, ca)
+    juntarFlores
+    mover
+    LiberarEsquina(av, ca)
+    repetir 9
+      juntarFlores
+      mover
+    juntarFlores
+  fin
+  proceso recorridoPapelero(E av : numero; E ca : numero)
+  comenzar
+    derecha
+    BloquearEsquina(av, ca)
+    Pos(av, ca)
+    juntarPapeles
+    mover
+    LiberarEsquina(av, ca)
+    repetir 14
+      juntarPapeles
+      mover
+    juntarPapeles
+  fin
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1, robot1E1)
+    EnviarMensaje(1, robot2E1)
+    EnviarMensaje(2, robot1E2)
+    EnviarMensaje(2, robot2E2)
+  fin
+areas
+  esquinaJefe : AreaP(1,1,1,1)
+  esquinaRobot1E1 : AreaP(2,1,2,1)
+  esquinaRobot2E1 : AreaP(3,1,3,1)
+  esquinaRobot1E2 : AreaP(4,1,4,1)
+  esquinaRobot2E2 : AreaP(5,1,5,1)
+  esquinaInicialE1 : AreaPC(5,5,5,5)
+  esquinaInicialE2 : AreaPC(25,5,25,5)
+  recorridoVerticalE1 : AreaP(5,6,5,15)
+  recorridoHorizontalE1 : AreaP(6,5,20,5)
+  recorridoVerticalE2 : AreaP(25,6,25,15)
+  recorridoHorizontalE2 : AreaP(26,5,40,5)
+robots
+  robot Florero
+  variables
+    id : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    si PosAv = 2
+      recorridoFlorero(5,5)
+    sino
+      recorridoFlorero(25,5)
+    EnviarMensaje(id, jefe)
+  fin
+  robot Papelero
+  variables
+    id : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    si PosAv = 3
+      recorridoPapelero(5,5)
+    sino
+      recorridoPapelero(25,5)
+    EnviarMensaje(id, jefe)
+  fin
+  robot Jefe
+  variables
+    id, equipo1, equipo2 : numero
+  comenzar
+    equipo1 := 0
+    equipo2 := 0
+    enviarIds
+    mientras ((equipo1 < 2) & (equipo2 < 2))
+      RecibirMensaje(id, *)
+      si id = 1
+        equipo1 := equipo1 + 1
+      sino
+        equipo2 := equipo2 + 1
+    si equipo1 > equipo2
+      Informar(1)
+    sino
+      Informar(2)
+  fin
+variables
+  robot1E1 : Florero
+  robot2E1 : Papelero
+  robot1E2 : Florero
+  robot2E2 : Papelero
+  jefe : Jefe
+comenzar
+  AsignarArea(jefe, esquinaJefe)
+  AsignarArea(robot1E1, esquinaRobot1E1)
+  AsignarArea(robot2E1, esquinaRobot2E1)
+  AsignarArea(robot1E2, esquinaRobot1E2)
+  AsignarArea(robot2E2, esquinaRobot2E2)
+  AsignarArea(robot1E1, esquinaInicialE1)
+  AsignarArea(robot2E1, esquinaInicialE1)
+  AsignarArea(robot1E2, esquinaInicialE2)
+  AsignarArea(robot2E2, esquinaInicialE2)
+  AsignarArea(robot1E1, recorridoVerticalE1)
+  AsignarArea(robot2E1, recorridoHorizontalE1)
+  AsignarArea(robot1E2, recorridoVerticalE2)
+  AsignarArea(robot2E2, recorridoHorizontalE2)
+  Iniciar(jefe,1,1)
+  Iniciar(robot1E1,2,1)
+  Iniciar(robot2E1,3,1)
+  Iniciar(robot1E2,4,1)
+  Iniciar(robot2E2,5,1)
+fin

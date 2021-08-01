@@ -1,0 +1,123 @@
+programa ejercicio_adicional_1
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso tomarUnPapel
+  comenzar
+    BloquearEsquina(13, 13)
+    Pos(13,13)
+    si HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso colocarPapel(E av : numero; E ca : numero; E avOriginal : numero; E caOriginal : numero)
+  comenzar
+    tomarUnPapel
+    BloquearEsquina(av, ca)
+    Pos(av, ca)
+    LiberarEsquina(13,13)
+    si HayPapelEnLaBolsa
+      depositarPapel
+    Pos(avOriginal, caOriginal)
+    LiberarEsquina(av, ca)
+  fin
+  proceso obtenerFlores(E av : numero; E ca : numero; E avOriginal : numero; E caOriginal : numero)
+  comenzar
+    BloquearEsquina(av, ca)
+    Pos(av, ca)
+    juntarFlores
+    Pos(avOriginal, caOriginal)
+    LiberarEsquina(av, ca)
+  fin
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1, floreroE1)
+    EnviarMensaje(2, papeleroE1)
+    EnviarMensaje(3, floreroE2)
+    EnviarMensaje(4, papeleroE2)
+  fin
+areas
+  esquinaJefe : AreaP(1,1,1,1)
+  esquinaFloreroE1 : AreaP(2,1,2,1)
+  esquinaPapeleroE1 : AreaP(3,1,3,1)
+  esquinaFloreroE2 : AreaP(14,1,14,1)
+  esquinaPapeleroE2 : AreaP(15,1,15,1)
+  fuentePapeles : AreaPC(13,13,13,13)
+  areaE1 : AreaPC(2,2,12,12)
+  areaE2 : AreaPC(14,2,24,12)
+robots
+  robot Florero
+  variables
+    id, av, ca : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    repetir 3
+      si PosAv = 2
+        Random(av, 2, 12)
+        Random(ca, 2, 12)
+      sino
+        Random(av, 14, 24)
+        Random(ca, 2, 12)
+      obtenerFlores(av, ca, PosAv, PosCa)
+    EnviarMensaje(id, jefe)
+  fin
+  robot Papelero
+  variables
+    id, av, ca : numero
+  comenzar   
+    RecibirMensaje(id, jefe)
+    repetir 5
+      si PosAv = 3
+        Random(av, 2, 12)
+        Random(ca, 2, 12)
+      sino
+        Random(av, 14, 24)
+        Random(ca, 2, 12)
+      colocarPapel(av, ca, PosAv, PosCa)
+    EnviarMensaje(id, jefe)
+  fin
+  robot Jefe
+  variables
+    id, equipo1, equipo2 : numero
+  comenzar
+    equipo1 := 0
+    equipo2 := 0
+    enviarIds
+    mientras ((equipo1 < 2) & (equipo2 < 2))
+      RecibirMensaje(id, *)
+      si ((id = 1) | (id = 2))
+        equipo1 := equipo1 + 1
+      sino
+        equipo2 := equipo2 + 1
+    si equipo1 > equipo2
+      Informar(1)
+    sino
+      Informar(2)
+  fin
+variables
+  floreroE1 : Florero 
+  papeleroE1 : Papelero
+  floreroE2 : Florero
+  papeleroE2 : Papelero
+  jefe : Jefe
+comenzar
+  AsignarArea(jefe, esquinaJefe)
+  AsignarArea(floreroE1, esquinaFloreroE1)
+  AsignarArea(papeleroE1, esquinaPapeleroE1)
+  AsignarArea(floreroE2, esquinaFloreroE2)
+  AsignarArea(papeleroE2, esquinaPapeleroE2)
+  AsignarArea(papeleroE1, fuentePapeles)
+  AsignarArea(papeleroE2, fuentePapeles)
+  AsignarArea(floreroE1, areaE1)
+  AsignarArea(papeleroE1, areaE1)
+  AsignarArea(floreroE2, areaE2)
+  AsignarArea(papeleroE2, areaE2)
+  Iniciar(jefe, 1,1)
+  Iniciar(floreroE1, 2,1)
+  Iniciar(papeleroE1, 3,1)
+  Iniciar(floreroE2, 14,1)
+  Iniciar(papeleroE2, 15,1)
+fin
+  
