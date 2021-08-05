@@ -1,0 +1,124 @@
+programa dos
+procesos
+  proceso juntarFlores(ES flores : numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarPapeles(ES papeles : numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso recorridoJuntarFlores(ES flores : numero)
+  comenzar
+    Pos(5,5)
+    repetir 10
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  proceso recorridoJuntarPapeles(ES papeles : numero)
+  comenzar
+    Pos(5,6)
+    repetir 10
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+  fin
+  proceso recorridoDepositarFlores
+  comenzar
+    Pos(5,6)
+    repetir 10
+      si ~HayFlorEnLaEsquina
+        depositarFlor
+      mover
+    si ~HayFlorEnLaEsquina
+      depositarFlor
+  fin
+  proceso recorridoDepositarPapeles
+  comenzar
+    Pos(5,5)
+    repetir 10
+      si ~HayPapelEnLaEsquina
+        depositarPapel
+      mover
+    si ~HayPapelEnLaEsquina
+      depositarPapel
+  fin
+areas
+  esquinaCoordinador : AreaP(3,3,3,3)
+  esquinaFlorero : AreaP(1,1,1,1)
+  esquinaPapelero : AreaP(2,2,2,2)
+  areaSoloFlores : AreaPC(5,5,15,5)
+  areaSoloPapeles : AreaPC(5,6,15,6)
+robots
+  robot Florero
+  variables
+    id, flores, seguir : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    flores := 0
+    derecha
+    recorridoJuntarFlores(flores)
+    EnviarMensaje(id, jefe)
+    EnviarMensaje(flores, jefe)
+    RecibirMensaje(seguir, jefe)
+    si seguir = 0
+      Pos(1,1)
+    sino
+      recorridoDepositarFlores
+  fin
+  robot Papelero
+  variables
+    id, papeles, seguir : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    papeles := 0
+    derecha
+    recorridoJuntarPapeles(papeles)
+    EnviarMensaje(id, jefe)
+    EnviarMensaje(papeles, jefe)
+    RecibirMensaje(seguir, jefe)
+    si seguir = 0
+      Pos(2,2)
+    sino
+      recorridoDepositarPapeles
+  fin
+  robot Coordinador
+  variables
+    id, papeles, flores : numero
+  comenzar
+    EnviarMensaje(1, florero)
+    EnviarMensaje(2, papelero)
+    repetir 2
+      RecibirMensaje(id, *)
+      si id = 1
+        RecibirMensaje(flores, florero)
+      sino
+        RecibirMensaje(papeles, papelero)
+    si flores > papeles
+      EnviarMensaje(0, papelero)
+      EnviarMensaje(1, florero)
+    sino
+      EnviarMensaje(0, florero)
+      EnviarMensaje(1, papelero)
+  fin
+variables
+  jefe : Coordinador
+  florero : Florero
+  papelero : Papelero
+comenzar
+  AsignarArea(jefe, esquinaCoordinador)
+  AsignarArea(florero, esquinaFlorero)
+  AsignarArea(papelero, esquinaPapelero)
+  AsignarArea(florero, areaSoloPapeles)
+  AsignarArea(florero, areaSoloFlores)
+  AsignarArea(papelero, areaSoloPapeles)
+  AsignarArea(papelero, areaSoloFlores)
+  Iniciar(florero,1,1)
+  Iniciar(papelero,2,2)
+  Iniciar(jefe,3,3)
+fin

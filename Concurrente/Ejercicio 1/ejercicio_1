@@ -1,0 +1,115 @@
+programa uno
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso recorridoJuntarFlores
+  comenzar
+    BloquearEsquina(5,5)
+    Pos(5,5)
+    juntarFlores
+    repetir 10
+      BloquearEsquina(PosAv +1,5)
+      mover
+      LiberarEsquina(PosAv -1,5)
+      juntarFlores
+  fin
+  proceso recorridoDepositarFlores
+  comenzar
+    BloquearEsquina(5,6)
+    Pos(5,6)
+    LiberarEsquina(15,5)
+    si ~HayFlorEnLaEsquina
+      depositarFlor
+    repetir 10
+      BloquearEsquina(PosAv +1, 6)
+      mover
+      LiberarEsquina(PosAv -1, 6)
+      si ~HayFlorEnLaEsquina
+        depositarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso recorridoJuntarPapeles
+  comenzar
+    BloquearEsquina(5,6)
+    Pos(5,6)
+    juntarPapeles
+    repetir 10
+      BloquearEsquina(PosAv +1,6)
+      mover
+      LiberarEsquina(PosAv -1, 6)
+      juntarPapeles
+  fin
+  proceso recorridoDepositarPapeles
+  comenzar
+    BloquearEsquina(5,5)
+    Pos(5,5)
+    LiberarEsquina(15,6)
+    si ~HayPapelEnLaEsquina
+      depositarPapel
+    repetir 10
+      BloquearEsquina(PosAv +1,5)
+      mover
+      LiberarEsquina(PosAv -1,5)
+      si ~HayPapelEnLaEsquina
+        depositarPapel
+  fin
+areas
+  esquinaCoordinador : AreaP(3,3,3,3)
+  esquinaFlorero : AreaP(1,1,1,1)
+  esquinaPapelero : AreaP(2,2,2,2)
+  areaSoloFlores : AreaPC(5,5,15,5)
+  areaSoloPapeles : AreaPC(5,6,15,6)
+robots
+  robot Florero
+  variables
+    id : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    derecha
+    recorridoJuntarFlores
+    recorridoDepositarFlores
+    EnviarMensaje(id, jefe)
+  fin
+  robot Papelero
+  variables
+    id : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    derecha
+    recorridoJuntarPapeles
+    recorridoDepositarPapeles
+    EnviarMensaje(id, jefe)
+  fin
+  robot Coordinador
+  variables
+    id : numero
+  comenzar
+    EnviarMensaje(1, florero)
+    EnviarMensaje(2, papelero)
+    repetir 2
+      RecibirMensaje(id, *)
+    Informar(id)
+  fin
+variables
+  jefe : Coordinador
+  florero : Florero
+  papelero : Papelero
+comenzar
+  AsignarArea(jefe, esquinaCoordinador)
+  AsignarArea(florero, esquinaFlorero)
+  AsignarArea(papelero, esquinaPapelero)
+  AsignarArea(florero, areaSoloFlores)
+  AsignarArea(florero, areaSoloPapeles)
+  AsignarArea(papelero, areaSoloFlores)
+  AsignarArea(papelero, areaSoloPapeles)
+  Iniciar(jefe, 3,3)
+  Iniciar(papelero,2,2)
+  Iniciar(florero,1,1)
+fin

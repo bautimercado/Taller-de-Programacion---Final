@@ -1,0 +1,72 @@
+programa uno
+procesos
+  proceso juntarFlores(E avOriginal : numero; E caOriginal : numero; ES cantFl : numero)
+  comenzar
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantFl := cantFl + 1
+    Pos(avOriginal, caOriginal)
+    LiberarEsquina(50,50)
+  fin
+  proceso juntarPapeles(E avOriginal : numero; E caOriginal : numero; ES cantPa : numero)
+  comenzar
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cantPa := cantPa + 1
+    Pos(avOriginal, caOriginal)
+    LiberarEsquina(50,50)
+  fin
+  proceso recorrerCalle(E cantElementos : numero)
+  comenzar
+    derecha
+    Pos(1,5)
+    repetir cantElementos
+      mover
+  fin
+areas
+  esquinaRobot1 : AreaP(2,2,2,2)
+  esquinaRobot2 : AreaP(3,3,3,3)
+  fuenteElementos : AreaPC(50,50,50,50)
+  calle5 : AreaP(1,5,100,5)
+robots
+  robot Florero
+  variables
+    cantFl, cantPa : numero
+  comenzar
+    cantFl := 0
+    juntarFlores(PosAv, PosCa, cantFl)
+    RecibirMensaje(cantPa, robot1)
+    si cantFl > cantPa
+      EnviarMensaje(0, robot1)
+      recorrerCalle(cantFl)
+    sino
+      EnviarMensaje(1, robot1)
+  fin
+  robot Papelero
+  variables
+    cantPa, gane : numero
+  comenzar
+    cantPa := 0
+    juntarPapeles(PosAv, PosCa, cantPa)
+    EnviarMensaje(cantPa, robot2)
+    RecibirMensaje(gane, robot2)
+    si gane = 1
+      recorrerCalle(cantPa)
+  fin
+variables
+  robot1 : Papelero
+  robot2 : Florero
+comenzar
+  AsignarArea(robot1, esquinaRobot1)
+  AsignarArea(robot2, esquinaRobot2)
+  AsignarArea(robot1, fuenteElementos)
+  AsignarArea(robot2, fuenteElementos)
+  AsignarArea(robot1, calle5)
+  AsignarArea(robot2, calle5)
+  Iniciar(robot1, 2,2)
+  Iniciar(robot2,3,3)
+fin
