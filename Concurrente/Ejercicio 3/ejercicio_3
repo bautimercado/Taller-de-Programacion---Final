@@ -1,0 +1,102 @@
+programa tres
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso recolectarFlores
+  comenzar
+    Pos(5,5)
+    derecha
+    repetir 10
+      juntarFlores
+      mover
+    juntarFlores
+  fin
+  proceso recolectarPapeles
+  comenzar
+    Pos(5,6)
+    derecha
+    repetir 10
+      juntarPapeles
+      mover
+    juntarPapeles
+  fin
+  proceso dejarFlor
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarFlor
+    Pos(1,1)
+    LiberarEsquina(10,10)
+  fin
+  proceso dejarPapel
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarPapel
+    Pos(2,2)
+    LiberarEsquina(10,10)
+  fin
+areas
+  areaSoloPapeles : AreaP(5,5,15,5)
+  areaSoloFlores : AreaP(5,6,15,6)
+  esquinaFlorero : AreaP(1,1,1,1)
+  esquinaPapelero : AreaP(2,2,2,2)
+  esquinaCoordinador : AreaP(3,3,3,3)
+  fuenteElementos : AreaPC(10,10,10,10)
+robots
+  robot Florero
+  variables
+    id : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    recolectarFlores
+    mientras HayFlorEnLaBolsa
+      dejarFlor
+    EnviarMensaje(id, jefe)
+  fin
+  robot Papelero
+  variables
+    id : numero
+  comenzar
+    RecibirMensaje(id, jefe)
+    recolectarPapeles
+    mientras HayPapelEnLaBolsa
+      dejarPapel
+    EnviarMensaje(id, jefe)
+  fin
+  robot Coordinador
+  variables
+    idRobot : numero
+  comenzar
+    EnviarMensaje(1, florero)
+    EnviarMensaje(2, papelero)
+    RecibirMensaje(idRobot, *)
+    Informar(idRobot)
+    RecibirMensaje(idRobot,*)
+  fin
+variables
+  florero : Florero
+  papelero : Papelero
+  jefe : Coordinador
+comenzar
+  AsignarArea(jefe, esquinaCoordinador)
+  AsignarArea(florero, esquinaFlorero)
+  AsignarArea(papelero, esquinaPapelero)
+  AsignarArea(florero, areaSoloPapeles)
+  AsignarArea(papelero, areaSoloFlores)
+  AsignarArea(florero, fuenteElementos)
+  AsignarArea(papelero, fuenteElementos)
+  Iniciar(florero, 1,1)
+  Iniciar(papelero, 2,2)
+  Iniciar(jefe,3,3)
+fin
+  
+    

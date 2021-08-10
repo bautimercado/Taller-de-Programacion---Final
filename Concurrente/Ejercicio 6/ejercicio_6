@@ -1,0 +1,104 @@
+programa seis
+procesos
+  proceso tomarObjeto(ES seguir : boolean; E av : numero; E ca : numero)
+  comenzar
+    BloquearEsquina(30,30)
+    Pos(30,30)
+    si HayFlorEnLaEsquina
+      tomarFlor
+    sino
+      si HayPapelEnLaEsquina
+        tomarPapel
+      sino
+        seguir := F
+    Pos(av,ca)
+    LiberarEsquina(30,30)
+  fin
+  proceso dejarFlores
+  comenzar
+    Pos(40,40)
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+  fin
+areas
+  fuenteObjetos : AreaPC(30,30,30,30)
+  fuenteFlores : AreaP(40,40,40,40)
+  esquinaJefe : AreaP(1,1,1,1)
+  esquinaRobot1 : AreaP(2,2,2,2)
+  esquinaRobot2 : AreaP(3,3,3,3)
+  esquinaRobot3 : AreaP(4,4,4,4)
+  esquinaRobot4 : AreaP(5,5,5,5)
+robots
+  robot Trabajador
+  variables
+    id : numero
+    seguir, irAEsquina : boolean
+  comenzar
+    RecibirMensaje(id, jefe)
+    seguir := V
+    mientras seguir
+      tomarObjeto(seguir,PosAv,PosCa)
+    EnviarMensaje(id, jefe)
+    RecibirMensaje(irAEsquina, jefe)
+    si irAEsquina
+      dejarFlores
+  fin
+  robot Fiscalizador
+  variables
+    id : numero
+  comenzar
+    EnviarMensaje(1, robot1)
+    EnviarMensaje(2, robot2)
+    EnviarMensaje(3, robot3)
+    EnviarMensaje(4, robot4)
+    repetir 3
+      RecibirMensaje(id, *)
+    si id = 1
+      EnviarMensaje(V,robot1)
+      EnviarMensaje(F,robot2)
+      EnviarMensaje(F,robot3)
+      EnviarMensaje(F,robot4)
+    sino
+      si id = 2
+        EnviarMensaje(F,robot1)
+        EnviarMensaje(V,robot2)
+        EnviarMensaje(F,robot3)
+        EnviarMensaje(F,robot4)
+      sino
+        si id = 3
+          EnviarMensaje(F, robot1)
+          EnviarMensaje(F,robot2)
+          EnviarMensaje(V,robot3)
+          EnviarMensaje(F,robot4)
+        sino
+          EnviarMensaje(F,robot1)
+          EnviarMensaje(F,robot2)
+          EnviarMensaje(F,robot3)
+          EnviarMensaje(V,robot4)
+  fin
+variables
+  robot1 : Trabajador
+  robot2 : Trabajador
+  robot3 : Trabajador
+  robot4 : Trabajador
+  jefe : Fiscalizador
+comenzar
+  AsignarArea(robot1,fuenteObjetos)
+  AsignarArea(robot2,fuenteObjetos)
+  AsignarArea(robot3,fuenteObjetos)
+  AsignarArea(robot4,fuenteObjetos)
+  AsignarArea(robot1,fuenteFlores)
+  AsignarArea(robot2,fuenteFlores)
+  AsignarArea(robot3,fuenteFlores)
+  AsignarArea(robot4,fuenteFlores)
+  AsignarArea(jefe,esquinaJefe)
+  AsignarArea(robot1,esquinaRobot1)
+  AsignarArea(robot2,esquinaRobot2)
+  AsignarArea(robot3,esquinaRobot3)
+  AsignarArea(robot4,esquinaRobot4)
+  Iniciar(jefe,1,1)
+  Iniciar(robot1,2,2)
+  Iniciar(robot2,3,3)
+  Iniciar(robot3,4,4)
+  Iniciar(robot4,5,5)
+fin
