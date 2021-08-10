@@ -73,4 +73,21 @@ end;
 
 //O(log 2 n)
 
+procedure recorrerPorRango(arbol : arbolEnteros; inf, sup : integer);
+begin
+	if (arbol <> nil) then begin
+		if (arbol^.dato >= inf) then
+			if (arbol^.dato <= sup) then begin
+				writeln(arbol^.dato);
+				recorrerPorRango(arbol^.hi, inf, sup);
+				recorrerPorRango(arbol^.hd, inf, sup);
+			end
+			else
+				recorrerPorRango(arbol^.hi, inf, sup)
+		else
+			recorrerPorRango(arbol^.hd, inf, sup);
+	end;
+end;
+
+
 
